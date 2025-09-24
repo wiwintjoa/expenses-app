@@ -1,5 +1,5 @@
 import './bootstrap'
-import '../css/app.css'
+import '../css/app.css' // Ensure CSS is imported first
 
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
@@ -20,14 +20,23 @@ createInertiaApp({
       import.meta.glob('./Pages/**/*.vue')
     ) as Promise<any>,
   setup({ el, app, props, plugin }) {
-    const vueApp = createApp({ render: () => h(app, props) }).use(plugin)
+    const vueApp = createApp({ render: () => h(app, props) })
+
+    // Use Inertia plugin
+    vueApp.use(plugin)
 
     // Provide your custom route helper globally
     const { route } = useRoute()
     vueApp.provide('route', route)
 
-    vueApp.mount(el)
+    // Wait for next paint to mount the app
+    requestAnimationFrame(() => {
+      vueApp.mount(el)
+      document.body.classList.remove('inertia-loading')
+      document.body.classList.add('inertia-loaded')
+    })
   },
 })
 
+// Initialize Inertia progress bar
 InertiaProgress.init({ color: '#4B5563' })

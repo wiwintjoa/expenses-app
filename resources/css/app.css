@@ -23,6 +23,14 @@ body {
   color: var(--color-text-primary);
 }
 
+body.inertia-loading {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+body.inertia-loaded {
+  opacity: 1;
+}
+
 /* Links */
 a {
   color: var(--color-text-link);

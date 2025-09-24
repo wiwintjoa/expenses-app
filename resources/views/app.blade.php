@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.ts'])
+    <!-- Load CSS first -->
+    @vite('resources/css/app.css')
 </head>
-<body class="antialiased">
+<body class="inertia-loading antialiased">
     @inertia
+
+    <!-- Load JS after CSS -->
+    @vite('resources/js/app.ts')
 </body>
 </html>
