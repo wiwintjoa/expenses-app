@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import laravel from 'laravel-vite-plugin'
-import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 export default defineConfig({
@@ -13,8 +12,14 @@ export default defineConfig({
       ],
       refresh: true,
     }),
-    vue(),
-    tailwindcss(), // ✅ Tailwind v4 official plugin
+    vue({
+      template: {
+        transformAssetUrls: {
+          base: null,
+          includeAbsolute: false,
+        },
+      },
+    }),
   ],
   resolve: {
     alias: {
@@ -22,16 +27,16 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0', // ✅ allows Docker to bind to all interfaces
+    host: '0.0.0.0',
     port: 5173,
-    strictPort: true, // ✅ fail if 5173 already in use
+    strictPort: true,
     cors: true,
     hmr: {
-      host: 'localhost', // ✅ what your browser should connect to
+      host: 'localhost',
       port: 5173,
     },
   },
   css: {
-    postcss: {}, // ✅ make sure PostCSS is picked up automatically
+    postcss: {},
   },
 })

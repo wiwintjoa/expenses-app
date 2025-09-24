@@ -4,33 +4,31 @@ export default defineConfig({
   content: [
     './resources/views/**/*.blade.php',
     './resources/js/**/*.vue',
+    './resources/js/**/*.ts',
   ],
   theme: {
     extend: {
-      colors: {
-        primary: 'var(--color-bg-primary)',
-        light: 'var(--color-bg-light)',
-        dark: 'var(--color-bg-dark)',
-        link: 'var(--color-text-link)',
-        'link-hover': 'var(--color-text-link-hover)',
-        border: 'var(--color-border)',
-        'button-primary': 'var(--color-button-primary)',
-        'button-primary-hover': 'var(--color-button-primary-hover)',
-        'button-danger': 'var(--color-button-danger)',
-        'button-danger-hover': 'var(--color-button-danger-hover)',
-      },
       fontFamily: {
-        sans: ['ui-sans-serif', 'system-ui'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
-      borderRadius: {
-        md: '0.375rem',
-      },
-      boxShadow: {
-        sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+      colors: {
+        primary: {
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          500: '#6366f1',
+          600: '#4f46e5',
+          700: '#4338ca',
+        },
+        surface: '#ffffff',
+        background: '#f9fafb',
+        foreground: '#111827',
+        muted: '#6b7280',
+        border: '#e5e7eb',
+        error: '#ef4444',
+        success: '#10b981',
+        warning: '#f59e0b',
       },
     },
   },
-  corePlugins: {
-    preflight: true, // generates base styles like body
-  },
+  plugins: [],
 })

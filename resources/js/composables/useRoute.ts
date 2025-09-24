@@ -1,30 +1,40 @@
 // resources/js/composables/useRoute.ts
-import { usePage } from '@inertiajs/vue3'
-
-type RouteDef = string | ((params?: Record<string, any>) => string)
-
 export const useRoute = () => {
-  // Allow both static and dynamic routes
-  const routes: Record<string, RouteDef> = {
+  // Define all routes with proper parameter handling
+  const routes: Record<string, string | ((params?: Record<string, any>) => string)> = {
     'expenses.index': '/expenses',
     'expenses.create': '/expenses/create',
     'expenses.show': (params?: Record<string, any>) => `/expenses/${params?.id}`,
     'expenses.edit': (params?: Record<string, any>) => `/expenses/${params?.id}/edit`,
+    'expenses.store': '/expenses',
+    'expenses.update': (params?: Record<string, any>) => `/expenses/${params?.id}`,
+    'expenses.destroy': (params?: Record<string, any>) => `/expenses/${params?.id}`,
   }
 
   // Generate URL for a given route name
   const route = (name: string, params?: Record<string, any>): string => {
-    const r = routes[name]
-    if (!r) throw new Error(`Route [${name}] not defined`)
-    return typeof r === 'function' ? r(params) : r
+    const routeDef = routes[name]
+    if (!routeDef) {
+      console.error(`Route [${name}] not defined`)
+      return '#'
+    }
+    
+    if (typeof routeDef === 'function') {
+      return routeDef(params)
+    }
+    
+    return routeDef
   }
 
-  // Active route checker (works without Ziggy)
+  // Check if current route matches
   const current = (name: string): boolean => {
-    const page = usePage()
-    const url = (page.props as any)?.url || window.location.pathname
-    const expected = route(name, { id: '__dummy__' }).replace('/__dummy__', '')
-    return url.startsWith(expected)
+    try {
+      const currentPath = window.location.pathname
+      const routePath = route(name)
+      return currentPath === routePath || currentPath.startsWith(routePath + '/')
+    } catch {
+      return false
+    }
   }
 
   return { route, current }
